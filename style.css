@@ -1,6 +1,7 @@
 :root {
   --bg-color: #ffffff;
   --card-bg: #ffffff;
+  --divider-color: #ffd1f0;
   --primary-color: #ff87c3;
   --primary-light: #f5f9fd;
   --accent-color: #212631;
@@ -216,7 +217,7 @@ body {
 }
 
 .kpi-card {
-  background: var(--bg-color);
+  background: var(--divider-color);
   padding: 12px;
   border-radius: 8px;
   display: flex;
@@ -250,10 +251,12 @@ body {
 .kpi-value {
   font-size: 1.25rem;
   font-weight: 700;
+  color: #ad1457;
 }
 
 .kpi-card.highlight .kpi-value {
   font-size: 1.6rem;
+  color: #ffffff;
 }
 
 /* Tabelas */
