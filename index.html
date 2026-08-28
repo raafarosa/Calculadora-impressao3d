@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Precificação 3D</title>
 
-  <!-- PWA & Manifest Links -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1a73e8">
   <meta name="mobile-web-app-capable" content="yes">
   
-  <!-- Suporte para iOS (Safari) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Precificação 3D">
@@ -30,8 +28,16 @@
     </header>
 
     <main class="main-content">
-      <!-- Formulários de Entrada -->
       <div class="inputs-column">
+        
+        <!-- Identificação do Projeto -->
+        <section class="card">
+          <h2>Identificação do Projeto</h2>
+          <div class="input-group">
+            <label for="projectName">Nome do Projeto / Cliente</label>
+            <input type="text" id="projectName" placeholder="Ex: Suporte de Celular - Cliente João" value="Suporte de Celular">
+          </div>
+        </section>
         
         <!-- 1. Parâmetros Fixos -->
         <section class="card">
@@ -73,12 +79,21 @@
               <input type="number" id="filamentWaste" value="0" step="0.1">
             </div>
 
-            <div class="input-group">
-              <label for="printTime">Tempo de Impressão (horas)</label>
-              <input type="number" id="printTime" value="15" step="0.1">
+            <div class="input-group full-width">
+              <label>Tempo de Impressão</label>
+              <div class="time-inputs">
+                <div>
+                  <input type="number" id="printHours" value="15" min="0" step="1">
+                  <span class="time-label">Horas</span>
+                </div>
+                <div>
+                  <input type="number" id="printMinutes" value="20" min="0" max="59" step="1">
+                  <span class="time-label">Minutos</span>
+                </div>
+              </div>
             </div>
 
-            <div class="input-group">
+            <div class="input-group full-width">
               <label for="quantity">Quantidade no Lote (unid.)</label>
               <input type="number" id="quantity" value="50" step="1" min="1">
             </div>
@@ -104,15 +119,27 @@
                 <span class="desc">CMV ~20.0%</span>
               </div>
             </label>
+
+            <label class="radio-card">
+              <input type="radio" name="pricingMode" value="custom">
+              <div class="radio-content">
+                <span class="title">Personalizado</span>
+                <span class="desc">Promoção / Queima</span>
+              </div>
+            </label>
+          </div>
+
+          <div id="customMultiplierGroup" class="input-group custom-multiplier-container" style="display: none;">
+            <label for="customMultiplier">Multiplicador Coringa (ex: 1.8x, 2.5x)</label>
+            <input type="number" id="customMultiplier" value="2.0" step="0.1" min="1.0">
           </div>
         </section>
 
       </div>
 
-      <!-- Resultados / Dashboard -->
+      <!-- Resultados & Ação de Submit -->
       <div class="results-column">
 
-        <!-- Cards Principais -->
         <section class="card kpi-grid">
           <div class="kpi-card highlight">
             <span class="kpi-label">Preço Sugerido (Unidade)</span>
@@ -142,6 +169,12 @@
           <div class="kpi-card">
             <span class="kpi-label">Margem Real sobre Venda</span>
             <span class="kpi-value" id="resRealMargin">0.0%</span>
+          </div>
+
+          <!-- BOTÃO DE SUBMIT PARA A PLANILHA -->
+          <div class="submit-container">
+            <button id="btnSubmit" class="btn-submit">💾 Salvar no Google Sheets</button>
+            <p id="submitStatus" class="submit-status"></p>
           </div>
         </section>
 
@@ -212,20 +245,5 @@
   </div>
 
   <script src="script.js"></script>
-
-  <!-- Registro do Service Worker -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then((registration) => {
-            console.log('Service Worker registrado com sucesso:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Falha ao registrar Service Worker:', error);
-          });
-      });
-    }
-  </script>
 </body>
 </html>

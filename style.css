@@ -48,7 +48,18 @@ body {
   font-size: 0.95rem;
 }
 
-/* Layout Responsivo em Grid/Flex */
+.btn-install {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
 .main-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -67,7 +78,6 @@ body {
   gap: 20px;
 }
 
-/* Cards Genericos */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -84,7 +94,6 @@ body {
   padding-bottom: 8px;
 }
 
-/* Formularios */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -95,6 +104,10 @@ body {
   .form-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.full-width {
+  grid-column: 1 / -1;
 }
 
 .input-group {
@@ -117,18 +130,40 @@ body {
   font-weight: 600;
   color: var(--text-main);
   outline: none;
-  transition: border-color 0.2s;
 }
 
 .input-group input:focus {
   border-color: var(--accent-color);
 }
 
-/* Radio Cards (Atacado vs Varejo) */
-.pricing-selector {
+/* Ajuste das Horas e Minutos lado a lado */
+.time-inputs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
+}
+
+.time-inputs div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-inputs input {
+  width: 100%;
+}
+
+.time-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Radio Cards Ajustado para 3 opções */
+.pricing-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
 }
 
 .radio-card {
@@ -143,10 +178,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px;
+  justify-content: center;
+  padding: 10px 4px;
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  transition: all 0.2s ease;
+  min-height: 64px;
+  text-align: center;
 }
 
 .radio-card input:checked + .radio-content {
@@ -156,16 +193,22 @@ body {
 
 .radio-content .title {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--primary-color);
 }
 
 .radio-content .desc {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
-/* Grid de KPIs */
+.custom-multiplier-container {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px stroke var(--border-color);
+}
+
+/* KPIs */
 .kpi-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -253,3 +296,42 @@ th:nth-child(2), th:nth-child(3), th:nth-child(4) {
   color: var(--text-muted);
   text-align: right;
 }
+
+.submit-container {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-submit {
+  background-color: var(--success-color);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  width: 100%;
+}
+
+.btn-submit:hover {
+  background-color: #15803d;
+}
+
+.btn-submit:disabled {
+  background-color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.submit-status {
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.submit-status.success { color: var(--success-color); }
+.submit-status.error { color: #dc2626; }
