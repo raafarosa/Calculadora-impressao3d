@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // COLE AQUI A URL GERADA NO PASSO 2 DO GOOGLE APPS SCRIPT
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2_DffzKynMlEIH06bXC-2dwXmIVO-7mw5UEQwppe9GruLV_6F4H5X6o7sMTzG2moH/exec';
 
   const inputs = {
@@ -26,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const formatBRL = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const formatPct = (val) => (val * 100).toFixed(1) + '%';
 
+  // --- CÁLCULO DE PRECIFICAÇÃO EM TEMPO REAL ---
   const calculate = () => {
     const costKg = parseFloat(inputs.costFilamentKg.value) || 0;
     const costEnergyHr = parseFloat(inputs.costEnergyHour.value) || 0;
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCostLote = costFilamentLote + costWasteLote + costEnergyLote + costMaintLote + costPkgLote;
     const totalCostUnit = qty > 0 ? totalCostLote / qty : 0;
 
-    // Atualização da Tabela
+    // Atualização da Tabela de Custos
     document.getElementById('costFilamentLote').textContent = formatBRL(costFilamentLote);
     document.getElementById('costFilamentUnit').textContent = formatBRL(qty > 0 ? costFilamentLote / qty : 0);
     document.getElementById('costFilamentPct').textContent = totalCostLote > 0 ? formatPct(costFilamentLote / totalCostLote) : '0.0%';
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const revenueTotal = priceUnit * qty;
     const profitTotal = revenueTotal - totalCostLote;
     const profitUnit = qty > 0 ? profitTotal / qty : 0;
-    
+
     const totalHoursBatch = totalHoursDecimal * qty;
     const profitHour = totalHoursBatch > 0 ? profitTotal / totalHoursBatch : 0;
     const realMargin = revenueTotal > 0 ? profitTotal / revenueTotal : 0;
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('resRealMargin').textContent = formatPct(realMargin);
     document.getElementById('resEnergy8h').textContent = formatBRL(costEnergyHr * 8);
 
-    // Guarda objeto para envio ao Sheets
+    // Dados organizados para envio
     calculatedValues = {
       data_hora: new Date().toLocaleString('pt-BR'),
       nome_projeto: inputs.projectName.value || 'Projeto Sem Nome',
@@ -122,24 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
       tempo_h: totalHoursDecimal.toFixed(2),
       quantidade: qty,
       modalidade: selectedMode,
-      custo_lote: totalCostLote.toFixed(2),
-      custo_unitario: totalCostUnit.toFixed(2),
-      preco_sugerido_unit: priceUnit.toFixed(2),
-      faturamento_total: revenueTotal.toFixed(2),
-      lucro_total: profitTotal.toFixed(2),
-      lucro_unitario: profitUnit.toFixed(2),
-      lucro_hora: profitHour.toFixed(2),
+      custo_lote: totalCostLote.toFixed(2).replace('.', ','),
+      custo_unitario: totalCostUnit.toFixed(2).replace('.', ','),
+      preco_sugerido_unit: priceUnit.toFixed(2).replace('.', ','),
+      faturamento_total: revenueTotal.toFixed(2).replace('.', ','),
+      lucro_total: profitTotal.toFixed(2).replace('.', ','),
+      lucro_unitario: profitUnit.toFixed(2).replace('.', ','),
+      lucro_hora: profitHour.toFixed(2).replace('.', ','),
       margem_real_pct: (realMargin * 100).toFixed(1) + '%'
     };
   };
 
-  // Envio dos Dados via Fetch API
-  btnSubmit.addEventListener('click', async () => {
-    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI')) {
-      alert('Por favor, cole a URL do seu Google Apps Script no arquivo script.js!');
-      return;
-    }
-
+  // --- ENVIO PARA A PLANILHA ---
+  btnSubmit?.addEventListener('click', async () => {
     btnSubmit.disabled = true;
     submitStatus.textContent = 'Enviando para a planilha...';
     submitStatus.className = 'submit-status';
@@ -152,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(calculatedValues)
       });
 
-      submitStatus.textContent = '✅ Orçamento salvo com sucesso!';
+      submitStatus.textContent = '✅ Orçamento salvo na planilha!';
       submitStatus.className = 'submit-status success';
 
       setTimeout(() => {
@@ -168,8 +163,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  Object.values(inputs).forEach(input => input.addEventListener('input', calculate));
+  // Escutadores de eventos nos inputs
+  Object.values(inputs).forEach(input => input?.addEventListener('input', calculate));
   pricingModeRadios.forEach(radio => radio.addEventListener('change', calculate));
 
+  // Execução inicial
   calculate();
 });
