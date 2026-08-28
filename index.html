@@ -19,7 +19,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Precificação 3D">
-  <!-- Dica: Para o iOS, o recomendado é usar uma imagem PNG em vez de .ico -->
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <!-- Estilos e Fontes -->
@@ -157,13 +156,8 @@
           </div>
 
           <div class="kpi-card">
-            <span class="kpi-label">Faturamento Total</span>
-            <span class="kpi-value" id="resRevenueTotal">R$ 0,00</span>
-          </div>
-
-          <div class="kpi-card success">
-            <span class="kpi-label">Lucro Total do Lote</span>
-            <span class="kpi-value" id="resProfitTotal">R$ 0,00</span>
+            <span class="kpi-label">Custo lote de Fabricação</span>
+            <span class="kpi-value" id="resCostTotalBatch">R$ 0,00</span>
           </div>
 
           <div class="kpi-card">
@@ -179,6 +173,16 @@
           <div class="kpi-card">
             <span class="kpi-label">Margem Real sobre Venda</span>
             <span class="kpi-value" id="resRealMargin">0.0%</span>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Faturamento Total</span>
+            <span class="kpi-value" id="resRevenueTotal">R$ 0,00</span>
+          </div>
+
+          <div class="kpi-card success">
+            <span class="kpi-label">Lucro Total do Lote</span>
+            <span class="kpi-value" id="resProfitTotal">R$ 0,00</span>
           </div>
 
           <!-- BOTÃO DE SUBMIT PARA A PLANILHA -->

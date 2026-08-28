@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const realMargin = revenueTotal > 0 ? profitTotal / revenueTotal : 0;
 
     document.getElementById('resPriceUnit').textContent = formatBRL(priceUnit);
+    document.getElementById('resCostTotalBatch').textContent = formatBRL(totalCostLote);
     document.getElementById('resRevenueTotal').textContent = formatBRL(revenueTotal);
     document.getElementById('resProfitTotal').textContent = formatBRL(profitTotal);
     document.getElementById('resProfitHour').textContent = formatBRL(profitHour);
