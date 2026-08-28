@@ -1,13 +1,13 @@
 :root {
-  --bg-color: #f4f6f9;
+  --bg-color: #ffffff;
   --card-bg: #ffffff;
-  --primary-color: #1b365d;
-  --primary-light: #e8eef5;
-  --accent-color: #2563eb;
+  --primary-color: #ff87c3;
+  --primary-light: #f5f9fd;
+  --accent-color: #212631;
   --success-color: #16a34a;
   --success-bg: #dcfce7;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
+  --text-main: #fefeff;
+  --text-muted: #8a9aaf;
   --border-color: #e2e8f0;
   --radius: 12px;
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
@@ -231,7 +231,7 @@ body {
 }
 
 .kpi-card.highlight .kpi-label {
-  color: #94a3b8;
+  color: #000000;
 }
 
 .kpi-card.success {
