@@ -1,7 +1,18 @@
+// Variáveis essenciais que estavam faltando:
+const CACHE_NAME = 'precificacao-3d-v1';
+const assets = [
+  './',
+  './index.html',
+  './style.css',
+  './script.js',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
+];
 
 // Instalação: Salva os arquivos essenciais
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Força a atualização imediata
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       console.log('SW: Cache Instalado');
@@ -10,7 +21,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Ativação: Limpa o lixo (caches antigos)
+// Ativação: Limpa caches antigos
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -27,7 +38,6 @@ self.addEventListener('activate', event => {
 });
 
 // Busca (Fetch): Estratégia Network-First
-// Ele tenta a rede. Se falhar (offline), pega no cache.
 self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request).catch(() => {

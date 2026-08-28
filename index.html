@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Precificação 3D</title>
 
+  <!-- Favicon para navegadores de Desktop (Aba do navegador) -->
+  <link rel="icon" href="icone.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="icone.ico" type="image/x-icon">
+
+  <!-- Manifest e tema PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1a73e8">
   <meta name="mobile-web-app-capable" content="yes">
-  
+
+  <!-- Configurações para Apple / iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Precificação 3D">
-  <link rel="apple-touch-icon" href="icone.ico">
-  <link rel="shortcut icon" href="icone.ico" type="image/x-icon">
+  <!-- Dica: Para o iOS, o recomendado é usar uma imagem PNG em vez de .ico -->
+  <link rel="apple-touch-icon" href="icon-192.png">
 
+  <!-- Estilos e Fontes -->
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="app-container">
     <header class="header">
@@ -29,16 +38,17 @@
 
     <main class="main-content">
       <div class="inputs-column">
-        
+
         <!-- Identificação do Projeto -->
         <section class="card">
           <h2>Identificação do Projeto</h2>
           <div class="input-group">
             <label for="projectName">Nome do Projeto / Cliente</label>
-            <input type="text" id="projectName" placeholder="Ex: Suporte de Celular - Cliente João" value="Suporte de Celular">
+            <input type="text" id="projectName" placeholder="Ex: Suporte de Celular - Cliente João"
+              value="Suporte de Celular">
           </div>
         </section>
-        
+
         <!-- 1. Parâmetros Fixos -->
         <section class="card">
           <h2>1. Parâmetros Fixos (Configurações)</h2>
@@ -246,4 +256,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
