@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Precificação 3D</title>
 
-  <!-- Favicon para navegadores de Desktop (Aba do navegador) -->
+  <!-- Favicon para navegadores de Desktop -->
   <link rel="icon" href="icon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
 
@@ -79,17 +79,17 @@
           <h2>2. Dados da Peça / Fatiador</h2>
           <div class="form-grid">
             <div class="input-group">
-              <label for="filamentUsed">Filamento Usado (gramas)</label>
+              <label for="filamentUsed">Filamento Usado (gramas/unidade)</label>
               <input type="number" id="filamentUsed" value="50" step="0.1">
             </div>
 
             <div class="input-group">
-              <label for="filamentWaste">Perda / Suportes (gramas)</label>
+              <label for="filamentWaste">Perda / Suportes (gramas/unidade)</label>
               <input type="number" id="filamentWaste" value="0" step="0.1">
             </div>
 
             <div class="input-group full-width">
-              <label>Tempo de Impressão</label>
+              <label>Tempo de Impressão Informado</label>
               <div class="time-inputs">
                 <div>
                   <input type="number" id="printHours" value="15" min="0" step="1">
@@ -99,6 +99,28 @@
                   <input type="number" id="printMinutes" value="20" min="0" max="59" step="1">
                   <span class="time-label">Minutos</span>
                 </div>
+              </div>
+            </div>
+
+            <!-- NOVO: Modo do Tempo de Fatiamento (Mesa vs Unidade) -->
+            <div class="input-group full-width">
+              <label>Tipo de Fatiamento do Tempo Informado</label>
+              <div class="pricing-selector">
+                <label class="radio-card">
+                  <input type="radio" name="printType" value="batch" checked>
+                  <div class="radio-content">
+                    <span class="title">Mesa Cheia</span>
+                    <span class="desc">Tempo total do lote</span>
+                  </div>
+                </label>
+
+                <label class="radio-card">
+                  <input type="radio" name="printType" value="unit">
+                  <div class="radio-content">
+                    <span class="title">Peça Única</span>
+                    <span class="desc">Tempo por unidade</span>
+                  </div>
+                </label>
               </div>
             </div>
 

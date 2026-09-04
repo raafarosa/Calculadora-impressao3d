@@ -73,7 +73,8 @@ body {
   }
 }
 
-.inputs-column, .results-column {
+.inputs-column,
+.results-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -187,7 +188,7 @@ body {
   text-align: center;
 }
 
-.radio-card input:checked + .radio-content {
+.radio-card input:checked+.radio-content {
   border-color: var(--accent-color);
   background-color: var(--primary-light);
 }
@@ -271,7 +272,8 @@ table {
   text-align: left;
 }
 
-th, td {
+th,
+td {
   padding: 10px 8px;
   border-bottom: 1px solid var(--border-color);
 }
@@ -282,8 +284,12 @@ th {
   background-color: var(--bg-color);
 }
 
-td:nth-child(2), td:nth-child(3), td:nth-child(4),
-th:nth-child(2), th:nth-child(3), th:nth-child(4) {
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4),
+th:nth-child(2),
+th:nth-child(3),
+th:nth-child(4) {
   text-align: right;
 }
 
@@ -336,5 +342,16 @@ th:nth-child(2), th:nth-child(3), th:nth-child(4) {
   font-weight: 600;
 }
 
-.submit-status.success { color: var(--success-color); }
-.submit-status.error { color: #dc2626; }
+.submit-status.success {
+  color: var(--success-color);
+}
+
+.submit-status.error {
+  color: #dc2626;
+}
+
+/* Centralização das opções de Tipo de Fatiamento (2 Botões) */
+.input-group .pricing-selector {
+  grid-template-columns: repeat(2, minmax(0, 180px));
+  justify-content: center;
+}
