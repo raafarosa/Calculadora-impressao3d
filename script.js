@@ -63,19 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return { multiplier, selectedMode };
   };
 
-  // Calcula o tempo de máquina rodando (Corrigido para Mesa Cheia vs Peça Única)
-  const getMachineHours = (totalHoursDecimal, qty) => {
-    let printType = 'batch';
+  // Identifica o tipo de impressão selecionado (Mesa Cheia vs Peça Única)
+  const getPrintType = () => {
     for (const radio of printTypeRadios) {
-      if (radio.checked) {
-        printType = radio.value;
-        break;
-      }
+      if (radio.checked) return radio.value;
     }
-
-    // Se 'batch' (Mesa Cheia): O tempo informado no fatiador já cobre todas as peças
-    // Se 'unit' (Peça Única): Multiplica o tempo individual pela quantidade de peças
-    return printType === 'batch' ? totalHoursDecimal : (totalHoursDecimal * qty);
+    return 'batch';
   };
 
   // ==========================================
@@ -88,29 +81,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const costPkgUn = parseFloat(inputs.costPackaging.value) || 0;
     const costMaintHr = parseFloat(inputs.costMaintenanceHour.value) || 0;
 
-    const gUsed = parseFloat(inputs.filamentUsed.value) || 0;
-    const gWaste = parseFloat(inputs.filamentWaste.value) || 0;
+    const gUsedInput = parseFloat(inputs.filamentUsed.value) || 0;
+    const gWasteInput = parseFloat(inputs.filamentWaste.value) || 0;
     const hrs = parseFloat(inputs.printHours.value) || 0;
     const mins = parseFloat(inputs.printMinutes.value) || 0;
     const totalHoursDecimal = hrs + (mins / 60);
 
     const qty = parseInt(inputs.quantity.value) || 1;
+    const printType = getPrintType();
 
-    // 2. Determinação de Estratégia e Tempo
-    const { multiplier, selectedMode } = getPricingConfig();
-    const totalMachineHours = getMachineHours(totalHoursDecimal, qty);
+    // 2. Proporcionalização de Filamento e Tempo de Máquina
+    let totalFilamentUsedG = 0;
+    let totalFilamentWasteG = 0;
+    let totalMachineHours = 0;
+
+    if (printType === 'batch') {
+      // 'batch' (Mesa Cheia): Entradas representam o TOTAL do lote na mesa
+      totalFilamentUsedG = gUsedInput;
+      totalFilamentWasteG = gWasteInput;
+      totalMachineHours = totalHoursDecimal;
+    } else {
+      // 'unit' (Peça Única): Entradas representam o valor por UNIDADE
+      totalFilamentUsedG = gUsedInput * qty;
+      totalFilamentWasteG = gWasteInput * qty;
+      totalMachineHours = totalHoursDecimal * qty;
+    }
+
+    // Calculados unitários reais (suporta decimais quebrados sem arredondar prematuramente)
+    const gUsedUnit = qty > 0 ? totalFilamentUsedG / qty : 0;
+    const gWasteUnit = qty > 0 ? totalFilamentWasteG / qty : 0;
 
     // 3. Custos do Lote
-    const costFilamentLote = (costKg / 1000) * gUsed * qty;
-    const costWasteLote = (costKg / 1000) * gWaste * qty;
-    const costEnergyLote = costEnergyHr * totalMachineHours; // Usa horas totais de máquina
-    const costMaintLote = costMaintHr * totalMachineHours;   // Usa horas totais de máquina
+    const costFilamentLote = (costKg / 1000) * totalFilamentUsedG;
+    const costWasteLote = (costKg / 1000) * totalFilamentWasteG;
+    const costEnergyLote = costEnergyHr * totalMachineHours;
+    const costMaintLote = costMaintHr * totalMachineHours;
     const costPkgLote = costPkgUn * qty;
 
     const totalCostLote = costFilamentLote + costWasteLote + costEnergyLote + costMaintLote + costPkgLote;
     const totalCostUnit = qty > 0 ? totalCostLote / qty : 0;
 
-    // 4. Métricas Finais e Margens
+    // 4. Estratégia de Precificação e Métricas Finais
+    const { multiplier, selectedMode } = getPricingConfig();
     const priceUnit = totalCostUnit * multiplier;
     const revenueTotal = priceUnit * qty;
     const profitTotal = revenueTotal - totalCostLote;
@@ -123,11 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTableUI(costFilamentLote, costWasteLote, costEnergyLote, costMaintLote, costPkgLote, totalCostLote, qty);
     updateKpisUI(priceUnit, revenueTotal, totalCostLote, profitTotal, profitHour, profitUnit, realMargin, costEnergyHr);
 
-    // 6. Preparação dos dados para persistência
+    // 6. Preparação dos dados para persistência (Planilha)
     calculatedValues = prepareDataPayload(
       inputs.projectName.value,
-      gUsed,
-      gWaste,
+      gUsedUnit,
+      gWasteUnit,
       totalHoursDecimal,
       totalMachineHours,
       qty,
@@ -182,15 +194,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('resEnergy8h').textContent = formatBRL(costEnergyHr * 8);
   };
 
-  // Prepara o objeto formatado que vai para o Google Apps Script
-  const prepareDataPayload = (projectName, gUsed, gWaste, totalHoursDecimal, totalMachineHours, qty, selectedMode, totalCostLote, totalCostUnit, priceUnit, revenueTotal, profitTotal, profitUnit, profitHour, realMargin) => {
+  // Prepara o objeto formatado para o payload da planilha
+  const prepareDataPayload = (projectName, gUsedUnit, gWasteUnit, totalHoursDecimal, totalMachineHours, qty, selectedMode, totalCostLote, totalCostUnit, priceUnit, revenueTotal, profitTotal, profitUnit, profitHour, realMargin) => {
     return {
       data_hora: new Date().toLocaleString('pt-BR'),
       nome_projeto: projectName || 'Projeto Sem Nome',
-      filamento_g: gUsed,
-      perda_g: gWaste,
-      tempo_fatiador_h: totalHoursDecimal.toFixed(2),
-      tempo_total_maquina_h: totalMachineHours.toFixed(2),
+      filamento_g: gUsedUnit.toFixed(2).replace('.', ','),
+      perda_g: gWasteUnit.toFixed(2).replace('.', ','),
+      tempo_fatiador_h: totalHoursDecimal.toFixed(2).replace('.', ','),
+      tempo_total_maquina_h: totalMachineHours.toFixed(2).replace('.', ','),
       quantidade: qty,
       modalidade: selectedMode,
       custo_lote: totalCostLote.toFixed(2).replace('.', ','),
