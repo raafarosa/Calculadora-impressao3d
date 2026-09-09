@@ -355,3 +355,89 @@ th:nth-child(4) {
   grid-template-columns: repeat(2, minmax(0, 180px));
   justify-content: center;
 }
+
+/* ========================================== */
+/* VARIÁVEIS DE TEMA (CLARO / ESCURO)          */
+/* ========================================== */
+:root {
+  --bg-color: #ffffff;
+  --card-bg: #ffffff;
+  --divider-color: #ffdff4;
+  --primary-color: #ff87c3;
+  --primary-light: #f5f9fd;
+  --accent-color: #212631;
+  --success-color: #16a34a;
+  --success-bg: #dcfce7;
+  --text-main: #333333;
+  --text-muted: #8a9aaf;
+  --border-color: #e2e8f0;
+  --input-bg: #ffffff;
+  --table-th-bg: #f8fafc;
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Modo Escuro */
+body.dark-theme {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --divider-color: #38212e;
+  --primary-color: #ff87c3;
+  --primary-light: #2a2028;
+  --accent-color: #e2e8f0;
+  --success-color: #4ade80;
+  --success-bg: #14532d;
+  --text-main: #e2e8f0;
+  --text-muted: #a0aec0;
+  --border-color: #333333;
+  --input-bg: #2d2d2d;
+  --table-th-bg: #252525;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================== */
+/* BOTÃO TOGGLE (CANTO SUPERIOR DIREITO)       */
+/* ========================================== */
+.header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.theme-toggle-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.theme-toggle-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.08);
+}
+
+/* Ajuste nos inputs para suportar o modo escuro */
+.input-group input {
+  background-color: var(--input-bg);
+  color: var(--text-main);
+}
+
+/* Ajuste das tabelas no modo escuro */
+th {
+  background-color: var(--table-th-bg);
+}

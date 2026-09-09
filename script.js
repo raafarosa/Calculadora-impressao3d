@@ -259,3 +259,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Execução inicial para popular dados na tela
   calculate();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggleBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+
+  // 1. Verificação inicial:
+  // Inicia sempre no modo claro, A MENOS QUE o modo escuro esteja explicitamente salvo no localStorage.
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    if (themeIcon) themeIcon.textContent = '☀️';
+  } else {
+    document.body.classList.remove('dark-theme');
+    if (themeIcon) themeIcon.textContent = '🌙';
+  }
+
+  // 2. Alternância do Tema ao Clicar no Botão
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme');
+
+      const isDarkMode = document.body.classList.contains('dark-theme');
+
+      if (isDarkMode) {
+        localStorage.setItem('theme', 'dark');
+        themeIcon.textContent = '☀️';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeIcon.textContent = '🌙';
+      }
+    });
+  }
+});
